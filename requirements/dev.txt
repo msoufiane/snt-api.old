@@ -1,0 +1,2 @@
+-r common.txt
+django-extensions==1.7.7
