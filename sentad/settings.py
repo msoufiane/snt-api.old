@@ -9,7 +9,6 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django_extensions',
 
-    'raven.contrib.django.raven_compat',
     'rest_framework',
     'corsheaders',
     'knox',
