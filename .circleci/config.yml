@@ -41,9 +41,7 @@ jobs:
           - v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: install libraries
-          command: |
-            sudo apt-get update
-            sudo apt-get install libssl-dev
+          command: sudo apt-get update && sudo apt-get install build-essential libssl-dev libffi-dev python3-dev python-dev
       - run:
           name: install dependencies
           command: |
