@@ -42,8 +42,8 @@ jobs:
       - run:
           name: install libraries
           command: |
-            apt-get update
-            apt-get install libssl-dev
+            sudo apt-get update
+            sudo apt-get install libssl-dev
       - run:
           name: install dependencies
           command: |
