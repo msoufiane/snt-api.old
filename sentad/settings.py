@@ -1,6 +1,9 @@
 import os
+from datetime import timedelta
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '_hjyk)x4n1427a6@m6@l#fo+!6r9%x1ptng+10ie()70mabj70')
+ALLOWED_HOSTS = ['*']
+DEBUG = False
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
@@ -32,6 +35,34 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
+}
+
+REST_FRAMEWORK = {
+    'UNAUTHENTICATED_USER': None,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'page_size_query_param': 'page_size',
+    'max_page_size': 10000,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}
+
+REST_KNOX = {
+  'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
+  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+  'TOKEN_TTL': timedelta(hours=10),
+  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+}
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'authentication.Account'
