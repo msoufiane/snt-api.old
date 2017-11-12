@@ -1,7 +1,7 @@
 djangorestframework==3.6.2
 django-cors-headers==2.0.2
 django-rest-knox==3.0.3
-django-filter==1.0.1
+django-filter==1.0.2
 cryptography==2.1.3
 pyopenssl==17.3.0
 pillow==4.0.0
