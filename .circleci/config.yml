@@ -1,51 +1,127 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
 version: 2
+
+workflows:
+  version: 2
+  test_build_deploy:
+    jobs:
+      - build
+      - deploy-dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only: dev
+      - deploy-pre:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - hold:
+         type: approval
+         requires:
+           - deploy-pre
+      - deploy-prod:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: master
+
 jobs:
   build:
+    environment:
+      CC_TEST_REPORTER_ID: 6d2db401af9828e9c7fd68b099683c91d21caf7b160580f226e8f6c91358bf60
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.6.1
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/snt-api
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
       - run:
           name: install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
       - save_cache:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
-
-      # run tests!
       - run:
           name: run tests
           command: |
             . venv/bin/activate
             python manage.py test
-
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+  deploy-dev:
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
+      - run:
+          name: Install awscli
+          command: sudo apt-get update && sudo apt-get install awscli
+      - run:
+          name: Setup dependencies
+          command: yarn install
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: DEPLOY DEV
+          command: aws s3 sync build/ s3://snt-dev --region us-east-1 --delete
+
+  deploy-pre:
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
+      - run:
+          name: Install awscli
+          command: sudo apt-get update && sudo apt-get install awscli
+      - run:
+          name: Setup dependencies
+          command: yarn install
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: DEPLOY PRE
+          command: aws s3 sync build/ s3://snt-pre --region us-east-1 --delete
+
+  deploy-prod:
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
+      - run:
+          name: Install awscli
+          command: sudo apt-get update && sudo apt-get install awscli
+      - run:
+          name: Setup dependencies
+          command: yarn install
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: DEPLOY PROD
+          command: aws s3 sync build/ s3://snt-prod --region us-east-1 --delete

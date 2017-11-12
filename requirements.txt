@@ -1,9 +1,7 @@
 djangorestframework==3.6.2
-django-rest-knox==3.0.0
 django-cors-headers==2.0.2
+django-rest-knox==3.0.0
 django-filter==1.0.1
-prospector==0.12.7
 Django==1.10.6
 pillow==4.0.0
 psycopg2==2.7
-raven==6.0.0
