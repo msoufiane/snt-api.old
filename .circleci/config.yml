@@ -69,63 +69,27 @@ jobs:
 
   deploy-dev:
     docker:
-      - image: circleci/node:6
+      - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
       - run:
-          name: Install awscli
-          command: sudo apt-get update && sudo apt-get install awscli
-      - run:
-          name: Setup dependencies
-          command: yarn install
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - run:
-          name: Build
-          command: yarn build
-      - run:
           name: DEPLOY DEV
-          command: aws s3 sync build/ s3://snt-dev --region us-east-1 --delete
+          command: "echo 'Deploying to DEV'"
 
   deploy-pre:
     docker:
-      - image: circleci/node:6
+      - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
       - run:
-          name: Install awscli
-          command: sudo apt-get update && sudo apt-get install awscli
-      - run:
-          name: Setup dependencies
-          command: yarn install
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - run:
-          name: Build
-          command: yarn build
-      - run:
           name: DEPLOY PRE
-          command: aws s3 sync build/ s3://snt-pre --region us-east-1 --delete
+          command: "echo 'Deploying to PRE'"
 
   deploy-prod:
     docker:
-      - image: circleci/node:6
+      - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
       - run:
-          name: Install awscli
-          command: sudo apt-get update && sudo apt-get install awscli
-      - run:
-          name: Setup dependencies
-          command: yarn install
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - run:
-          name: Build
-          command: yarn build
-      - run:
           name: DEPLOY PROD
-          command: aws s3 sync build/ s3://snt-prod --region us-east-1 --delete
+          command: "echo 'Deploying to PROD'"
