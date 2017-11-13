@@ -62,6 +62,7 @@ jobs:
       - run:
           name: Generate coverage
           command: |
+            . venv/bin/activate
             python -m coverage run --source='.' manage.py test
             python -m coverage xml
             ./cc-test-reporter after-build < coverage.xml
