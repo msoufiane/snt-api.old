@@ -101,3 +101,5 @@ sentadenv/
 **/migrations/
 /template/static/libs/
 **/.DS_Store
+
+*.sqlite
