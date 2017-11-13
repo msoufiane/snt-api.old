@@ -34,10 +34,6 @@ jobs:
       CC_TEST_REPORTER_ID: 6d2db401af9828e9c7fd68b099683c91d21caf7b160580f226e8f6c91358bf60
     docker:
       - image: circleci/python:3.6.2-stretch-browsers
-      - image: circleci/postgres:9.6.2
-        environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle_test
     steps:
       - checkout
       - restore_cache:
@@ -65,7 +61,10 @@ jobs:
             python manage.py test
       - run:
           name: Generate coverage
-          command: coverage run --source='.' manage.py test && coverage xml && ./cc-test-reporter after-build < coverage.xml
+          command: |
+            python -m coverage run --source='.' manage.py test
+            python -m coverage xml
+            ./cc-test-reporter after-build < coverage.xml
 
   deploy-dev:
     docker:
