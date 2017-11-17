@@ -71,12 +71,12 @@ jobs:
       - run:
           name: Setup elasticbeanstalk cli
           command: |
+            python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli --upgrade --user
       - run:
           name: Deploy to elasticbeanstalk dev
           command: |
-            . venv/bin/activate
             eb deploy snt-api-dev
 
   deploy-pre:
