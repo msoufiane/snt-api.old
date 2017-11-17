@@ -70,10 +70,14 @@ jobs:
       - checkout
       - run:
           name: Setup elasticbeanstalk cli
-          command: pip install awsebcli --upgrade --user
+          command: |
+            . venv/bin/activate
+            pip install awsebcli --upgrade --user
       - run:
           name: Deploy to elasticbeanstalk dev
-          command: eb deploy snt-api-dev
+          command: |
+            . venv/bin/activate
+            eb deploy snt-api-dev
 
   deploy-pre:
     docker:
@@ -81,8 +85,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: DEPLOY PRE
-          command: "echo 'Deploying to PRE'"
+          name: Setup elasticbeanstalk cli
+          command: |
+            . venv/bin/activate
+            pip install awsebcli --upgrade --user
+      - run:
+          name: Deploy to elasticbeanstalk pre
+          command: |
+            . venv/bin/activate
+            eb deploy snt-api-pre
+
 
   deploy-prod:
     docker:
@@ -90,5 +102,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: DEPLOY PROD
-          command: "echo 'Deploying to PROD'"
+          name: Setup elasticbeanstalk cli
+          command: |
+            . venv/bin/activate
+            pip install awsebcli --upgrade --user
+      - run:
+          name: Deploy to elasticbeanstalk prod
+          command: |
+            . venv/bin/activate
+            eb deploy snt-api-prod
