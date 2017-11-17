@@ -8,7 +8,7 @@ option_settings:
     DJANGO_SETTINGS_MODULE: "sentad.settings"
     PYTHONPATH: "$PYTHONPATH"
   "aws:elasticbeanstalk:container:python":
-    WSGIPath: "application.py"
+    WSGIPath: "sentad/wsgi.py"
 
 packages:
   yum:
