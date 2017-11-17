@@ -82,7 +82,7 @@ jobs:
           name: Deploy to elasticbeanstalk pre
           command: |
             . venv/bin/activate
-            pip install awsebcli --upgrade --user
+            pip install awsebcli --upgrade 
             eb deploy snt-api-pre
 
 
