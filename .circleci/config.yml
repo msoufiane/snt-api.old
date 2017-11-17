@@ -75,9 +75,10 @@ jobs:
             . venv/bin/activate
             pip install awsebcli
       - run:
-          name: Deploy to elasticbeanstalk pre
+          name: Deploy to elasticbeanstalk dev
           command: |
             . venv/bin/activate
+            eb init --profile default -r us-east-1 -k default
             eb deploy snt-api-dev
 
   deploy-pre:
@@ -86,11 +87,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy to elasticbeanstalk pre
+          name: Install elasticbeanstalk CLI
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install awsebcli --upgrade --user
+            pip install awsebcli
+      - run:
+          name: Deploy to elasticbeanstalk pre
+          command: |
+            . venv/bin/activate
             eb deploy snt-api-pre
 
 
@@ -100,9 +105,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy to elasticbeanstalk pre
+          name: Install elasticbeanstalk CLI
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install awsebcli --upgrade --user
+            pip install awsebcli
+      - run:
+          name: Deploy to elasticbeanstalk prod
+          command: |
+            . venv/bin/activate
             eb deploy snt-api-prod
