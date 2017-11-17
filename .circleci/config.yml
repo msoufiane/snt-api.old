@@ -4,7 +4,16 @@ workflows:
   version: 2
   test_build_deploy:
     jobs:
-      - build
+      - build_dev:
+        filters:
+          branches:
+            only: dev
+      - build_prod:
+        filters:
+          branches:
+            only:
+              - pre
+              - master
       - deploy-dev:
           requires:
             - build
@@ -25,9 +34,49 @@ workflows:
               only: master
 
 jobs:
-  build:
+  build_dev:
     environment:
       CC_TEST_REPORTER_ID: 6d2db401af9828e9c7fd68b099683c91d21caf7b160580f226e8f6c91358bf60
+      DJANGO_SETTINGS_MODULE: "sentad.settings.dev"
+    docker:
+      - image: circleci/python:3.6.2-stretch-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - save_cache:
+          paths:
+            - ./venv
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            python manage.py test
+      - run:
+          name: Generate coverage
+          command: |
+            . venv/bin/activate
+            python -m coverage run --source='.' manage.py test
+            python -m coverage xml
+            ./cc-test-reporter after-build < coverage.xml
+
+  build_prod:
+    environment:
+      CC_TEST_REPORTER_ID: 6d2db401af9828e9c7fd68b099683c91d21caf7b160580f226e8f6c91358bf60
+      DJANGO_SETTINGS_MODULE: "sentad.settings.prod"
     docker:
       - image: circleci/python:3.6.2-stretch-browsers
     steps:
