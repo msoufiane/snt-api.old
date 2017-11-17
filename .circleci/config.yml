@@ -80,7 +80,7 @@ jobs:
           name: Deploy to elasticbeanstalk DEV
           command: |
             . venv/bin/activate
-            eb deploy snt-api-dev
+            eb deploy snt-api-dev -nh
 
   deploy-pre:
     docker:
@@ -91,7 +91,7 @@ jobs:
           name: Install elasticbeanstalk CLI
           command: |
             mkdir ~/.aws
-            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
+            echo -e "[eb-cli]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
@@ -99,8 +99,7 @@ jobs:
           name: Deploy to elasticbeanstalk PRE
           command: |
             . venv/bin/activate
-            eb init -r us-east-1 snt-api
-            eb deploy snt-api-pre
+            eb deploy snt-api-pre -nh
 
 
   deploy-prod:
@@ -112,7 +111,7 @@ jobs:
           name: Install elasticbeanstalk CLI
           command: |
             mkdir ~/.aws
-            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
+            echo -e "[eb-cli]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
@@ -120,5 +119,4 @@ jobs:
           name: Deploy to elasticbeanstalk PROD
           command: |
             . venv/bin/activate
-            eb init snt-api --profile default -r us-east-1 -k default
-            eb deploy snt-api-prod
+            eb deploy snt-api-prod -nh
