@@ -71,20 +71,16 @@ jobs:
       - run:
           name: Install elasticbeanstalk CLI
           command: |
+            mkdir ~/.aws
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
       - run:
-          name: Deploy to elasticbeanstalk dev
+          name: Deploy to elasticbeanstalk DEV
           command: |
-            mkdir ~/.aws
-            touch ~/.aws/credentials
-            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
-            echo $AWS_SECRET_ACCESS_KEY
-            echo $AWS_ACCESS_KEY_ID
-            cat ~/.aws/credentials
             . venv/bin/activate
-            eb init --profile default -r us-east-1 -k default
+            eb init --profile default -r us-east-1 -k default snt-api
             eb deploy snt-api-dev
 
   deploy-pre:
@@ -95,13 +91,16 @@ jobs:
       - run:
           name: Install elasticbeanstalk CLI
           command: |
+            mkdir ~/.aws
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
       - run:
-          name: Deploy to elasticbeanstalk pre
+          name: Deploy to elasticbeanstalk PRE
           command: |
             . venv/bin/activate
+            eb init --profile default -r us-east-1 -k default snt-api
             eb deploy snt-api-pre
 
 
@@ -113,11 +112,14 @@ jobs:
       - run:
           name: Install elasticbeanstalk CLI
           command: |
+            mkdir ~/.aws
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY\n" > ~/.aws/credentials
             python3 -m venv venv
             . venv/bin/activate
             pip install awsebcli
       - run:
-          name: Deploy to elasticbeanstalk prod
+          name: Deploy to elasticbeanstalk PROD
           command: |
             . venv/bin/activate
+            eb init --profile default -r us-east-1 -k default snt-api
             eb deploy snt-api-prod
