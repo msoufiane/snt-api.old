@@ -77,9 +77,9 @@ jobs:
       - run:
           name: Deploy to elasticbeanstalk dev
           command: |
+            mkdir ~/.aws
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID_PROD\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY_PROD\n" > ~/.aws/credentials
             . venv/bin/activate
-            cat ~/.aws/config
-            cat ~/.aws/credentials
             eb init --profile default -r us-east-1 -k default
             eb deploy snt-api-dev
 
