@@ -16,14 +16,10 @@ workflows:
             - build
           filters:
             branches:
-              only: master
-      - hold:
-         type: approval
-         requires:
-           - deploy-pre
+              only: pre
       - deploy-prod:
           requires:
-            - hold
+            - build
           filters:
             branches:
               only: master
