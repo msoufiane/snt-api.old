@@ -78,6 +78,8 @@ jobs:
           name: Deploy to elasticbeanstalk dev
           command: |
             . venv/bin/activate
+            cat ~/.aws/config
+            cat ~/.aws/credentials
             eb init --profile default -r us-east-1 -k default
             eb deploy snt-api-dev
 
