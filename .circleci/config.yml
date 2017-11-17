@@ -5,15 +5,15 @@ workflows:
   test_build_deploy:
     jobs:
       - build_dev:
-        filters:
-          branches:
-            only: dev
+          filters:
+            branches:
+              only: dev
       - build_prod:
-        filters:
-          branches:
-            only:
-              - pre
-              - master
+          filters:
+            branches:
+              only:
+                - pre
+                - master
       - deploy-dev:
           requires:
             - build
