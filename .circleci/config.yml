@@ -86,14 +86,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Setup elasticbeanstalk cli
-          command: |
-            . venv/bin/activate
-            pip install awsebcli --upgrade --user
-      - run:
           name: Deploy to elasticbeanstalk pre
           command: |
             . venv/bin/activate
+            pip install awsebcli --upgrade --user
             eb deploy snt-api-pre
 
 
