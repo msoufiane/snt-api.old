@@ -68,6 +68,7 @@ jobs:
       - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
+      - run:
           command: |
             . venv/bin/activate
             pip install awsebcli --upgrade --user
@@ -82,7 +83,7 @@ jobs:
           name: Deploy to elasticbeanstalk pre
           command: |
             . venv/bin/activate
-            pip install awsebcli --upgrade 
+            pip install awsebcli --upgrade --user
             eb deploy snt-api-pre
 
 
@@ -91,6 +92,7 @@ jobs:
       - image: circleci/python:3.6.2-stretch-browsers
     steps:
       - checkout
+      - run:
           command: |
             . venv/bin/activate
             pip install awsebcli --upgrade --user
