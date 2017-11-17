@@ -69,8 +69,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: DEPLOY DEV
-          command: "echo 'Deploying to DEV'"
+          name: Setup elasticbeanstalk cli
+          command: pip install awsebcli --upgrade --user
+      - run:
+          name: Deploy to elasticbeanstalk dev
+          command: eb deploy snt-api-dev
 
   deploy-pre:
     docker:
