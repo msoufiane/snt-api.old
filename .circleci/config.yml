@@ -41,7 +41,6 @@ jobs:
     environment:
       - CC_TEST_REPORTER_ID: 6d2db401af9828e9c7fd68b099683c91d21caf7b160580f226e8f6c91358bf60
       - DJANGO_SETTINGS_MODULE: sentad.settings.dev
-      - PATH: "$PATH:"
     steps:
       - checkout
       - restore_cache:
