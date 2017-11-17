@@ -16,19 +16,19 @@ workflows:
                 - master
       - deploy-dev:
           requires:
-            - build
+            - build_dev
           filters:
             branches:
               only: dev
       - deploy-pre:
           requires:
-            - build
+            - build_prod
           filters:
             branches:
               only: pre
       - deploy-prod:
           requires:
-            - build
+            - build_prod
           filters:
             branches:
               only: master
