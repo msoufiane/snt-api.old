@@ -77,6 +77,7 @@ jobs:
       - run:
           name: Deploy to elasticbeanstalk dev
           command: |
+            . venv/bin/activate
             eb deploy snt-api-dev
 
   deploy-pre:
