@@ -106,5 +106,5 @@ sentadenv/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.config
 !.elasticbeanstalk/*.global.yml
