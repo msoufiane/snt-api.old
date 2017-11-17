@@ -65,10 +65,6 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            echo -e "$PATH"
-            pwd
-            echo -e "$DJANGO_SETTINGS_MODULE"
-            $DJANGO_SETTINGS_MODULE
             python manage.py test
       - run:
           name: Generate coverage

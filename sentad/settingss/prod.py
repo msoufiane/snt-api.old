@@ -1,4 +1,4 @@
-from sentad.settings.common import *
+from .common import *
 import os
 ALLOWED_HOSTS = ['*']
 DEBUG = False
