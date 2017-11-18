@@ -1,9 +1,7 @@
 import os
 from datetime import timedelta
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '_hjyk)x4n1427a6@m6@l#fo+!6r9%x1ptng+10ie()70mabj70')
-ALLOWED_HOSTS = ['*']
-DEBUG = False
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'DJANGO_SECRET_KEY_NOT_FOUND')
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
@@ -36,25 +34,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite',
-        }
-    }
-
 REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -85,3 +64,4 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+

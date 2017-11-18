@@ -102,7 +102,7 @@ sentadenv/
 /template/static/libs/
 **/.DS_Store
 
-*.sqlite
+*.sqlite*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
