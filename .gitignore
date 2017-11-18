@@ -109,3 +109,6 @@ sentadenv/
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 !.elasticbeanstalk/config.yml
+
+static/*
+!static/__init__.py
