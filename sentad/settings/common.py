@@ -1,5 +1,5 @@
-import os
 from datetime import timedelta
+import os
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'DJANGO_SECRET_KEY_NOT_FOUND')
 
@@ -9,6 +9,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.auth',
 
+    'graphene_django',
     'rest_framework',
     'corsheaders',
     'knox',
@@ -34,18 +35,24 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-REST_FRAMEWORK = {
-    'UNAUTHENTICATED_USER': None,
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'page_size_query_param': 'page_size',
-    'max_page_size': 10000,
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
-}
+if 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        }
+    }
 
 REST_KNOX = {
   'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
@@ -55,9 +62,13 @@ REST_KNOX = {
 }
 
 
-CORS_ORIGIN_ALLOW_ALL = True
-AUTH_USER_MODEL = 'authentication.Account'
+GRAPHENE = {
+    'SCHEMA': 'sentad.schema.schema'
+}
+
 WSGI_APPLICATION = 'sentad.wsgi.application'
+AUTH_USER_MODEL = 'authentication.Account'
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'sentad.urls'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'

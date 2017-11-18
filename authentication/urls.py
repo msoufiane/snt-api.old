@@ -1,6 +1,9 @@
 from knox.views import LogoutView, LogoutAllView
 from authentication.views import LoginView
-from django.conf.urls import url
+from rest_framework import routers
+from django.conf.urls import url, include
+
+router = routers.SimpleRouter()
 
 urlpatterns = [
     url(r'login/', LoginView.as_view(), name="login_view"),
