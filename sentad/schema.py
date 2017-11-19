@@ -1,19 +1,13 @@
-from authentication.schema import AccountQuery, PermissionQuery, GroupQuery, CreateGroup
+from authentication.schema import MeQuery, PermissionQuery, GroupsQuery, CreateGroup
 import graphene
+
+
+class Query(MeQuery, GroupsQuery, PermissionQuery, graphene.ObjectType):
+    pass
 
 
 class Mutation(graphene.ObjectType):
     create_group = CreateGroup.Field()
-
-
-class Query(
-    PermissionQuery,
-    AccountQuery,
-    GroupQuery,
-    # Finally import graphene ObjectType
-    graphene.ObjectType
-):
-    pass
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
