@@ -1,9 +1,9 @@
+from authentication.schema import accountQuery
 import graphene
-from authentication.schema import Query as authenticationQuery
 
 
 class Query(
-    authenticationQuery,
+    accountQuery,
     graphene.ObjectType
 ):
     pass

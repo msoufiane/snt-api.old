@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'rest_framework',
     'corsheaders',
+    'guardian',
     'knox',
 
     'authentication',
@@ -34,6 +35,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {

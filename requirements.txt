@@ -1,6 +1,7 @@
 djangorestframework==3.6.2
 django-cors-headers==2.0.2
 django-rest-knox==3.0.3
+django-guardian==1.4.9
 graphene-django==2.0.0
 django-filter==1.0.2
 coverage==4.4.2
