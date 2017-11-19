@@ -5,6 +5,7 @@ django-guardian==1.4.9
 graphene-django==2.0.0
 django-filter==1.0.2
 coverage==4.4.2
+graphene==2.0.1
 awsebcli==3.9.0
 pillow==4.0.0
 psycopg2==2.7
