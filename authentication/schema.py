@@ -1,67 +1,43 @@
+from authentication.schemaTypes import AccountType, GroupType, PermissionType
 from django.contrib.auth.models import Group, Permission
-from graphene_django.types import DjangoObjectType
 from authentication.models import Account
 import graphene
 
 
-class PermissionType(DjangoObjectType):
-    class Meta:
-        model = Permission
+# region Queries
+class MeQuery(graphene.ObjectType):
+    me = graphene.Field(AccountType)
+
+    def resolve_me(self, info):
+        if info.context.user.is_anonymous():
+            return Account.objects.get(username="soufiaane")  # TODO return None
+        return Account.objects.get(username=info.context.user.username)
 
 
-class AccountType(DjangoObjectType):
-    class Meta:
-        model = Account
-        only_fields = ('username', 'first_name', 'last_name', 'email', 'groups', 'user_permissions')
-
-
-class GroupType(DjangoObjectType):
-    class Meta:
-        model = Group
-
-    id = graphene.ID
-    name = graphene.String
-    permissions = graphene.List(PermissionType)
-    user_set = graphene.List(AccountType)
-
-
-class AccountQuery(graphene.ObjectType):
-    permissions = graphene.List(PermissionType)
-    accounts = graphene.List(AccountType)
+class GroupsQuery(graphene.ObjectType):
     groups = graphene.List(GroupType)
 
-    def resolve_accounts(self, info, **kwargs):
-        return Account.objects.all()
-
-    def resolve_permissions(self, info, **kwargs):
-        return Account.objects.select_related("user_permissions")
-
-    def resolve_groups(self, info, **kwargs):
-        return Account.objects.select_related("groups")
+    def resolve_groups(self, info):
+        return Group.objects.all()
 
 
 class PermissionQuery(graphene.ObjectType):
     permissions = graphene.List(PermissionType)
 
-    def resolve_permissions(self, info, **kwargs):
+    def resolve_permissions(self, info):
         return Permission.objects.all()
+# endregion
 
 
-class GroupQuery(graphene.ObjectType):
-    groups = graphene.List(GroupType)
-
-    @staticmethod
-    def resolve_groups(info, **kwargs):
-        return Group.objects.all()
-
-
+# region Mutations
 class CreateGroup(graphene.Mutation):
     class Arguments:
-        name = graphene.String()
+        name = graphene.String(required=True)
 
-    form_errors = graphene.String
-    group = graphene.Field(lambda: Group)
+    form_errors = graphene.String()
+    group = graphene.Field(lambda: GroupType)
 
-    def mutate(self, info, **args):
-        group = Group.objects.create(name=args.get("name"))
-        return CreateGroup(group=group , form_errors=None)
+    def mutate(self, info, name=None):
+        group = Group.objects.create(name=name)
+        return CreateGroup(group=group)
+# endregion
