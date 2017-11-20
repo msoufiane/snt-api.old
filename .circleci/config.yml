@@ -131,7 +131,7 @@ jobs:
           name: Deploy to elasticbeanstalk DEV
           command: |
             . venv/bin/activate
-            eb deploy snt-api-dev -nh
+            eb deploy snt-api-dev
 
   deploy-pre:
     docker:
@@ -150,7 +150,7 @@ jobs:
           name: Deploy to elasticbeanstalk PRE
           command: |
             . venv/bin/activate
-            eb deploy snt-api-pre -nh
+            eb deploy snt-api-pre
 
 
   deploy-prod:
@@ -170,4 +170,4 @@ jobs:
           name: Deploy to elasticbeanstalk PROD
           command: |
             . venv/bin/activate
-            eb deploy snt-api-prod -nh
+            eb deploy snt-api-prod
